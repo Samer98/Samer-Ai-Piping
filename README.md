@@ -1,15 +1,15 @@
-# Ai-Piping Installation and Usage Guide
+# Ai-Piping Installation and Usage Guide 🚀
 
 **Welcome to Ai-Piping!** This guide will assist you in installing and running the Ai-Piping application using both Python and Docker. Ai-Piping is a powerful tool for data processing, utilizing the capabilities of OpenAI. Follow the steps below to get started.
 
-## Prerequisites
+## Prerequisites 🚀
 
 Before you begin, ensure that your system meets the following prerequisites:
 
 - Python 3.8.10 or a newer version.
 - Docker (optional, for Docker installation).
 
-## Installation
+## Installation 🚀
 
 1. Clone the Ai-Piping repository to your local machine:
 
@@ -29,9 +29,9 @@ Before you begin, ensure that your system meets the following prerequisites:
    pip install -r requirements.txt
    ```
 
-## Running the Application
+## Running the Application 🚀
 
-### Using Python
+### Using Python 🚀
 
 To run the Ai-Piping application using Python, execute the following command:
 
@@ -41,7 +41,7 @@ uvicorn main:app --reload
 
 This will start the application, and you can access it by opening a web browser and navigating to [http://localhost:8000](http://localhost:8000).
 
-### Using Docker
+### Using Docker 🚀
 
 If you prefer to run Ai-Piping in a Docker container, follow these steps:
 
@@ -59,7 +59,7 @@ If you prefer to run Ai-Piping in a Docker container, follow these steps:
 
 This will start the Ai-Piping application in a Docker container, and you can access it by opening a web browser and navigating to [http://localhost:8000](http://localhost:8000).
 
-## Usage
+## Usage 🚀
 
 Once the Ai-Piping application is running, you can leverage OpenAI's capabilities for various tasks. To get recommendations based on the country you're willing to travel to and the season, you can use the following API endpoint:
 
