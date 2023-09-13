@@ -36,10 +36,10 @@ Before you begin, ensure that your system meets the following prerequisites:
 To run the Ai-Piping application using Python, execute the following command:
 
 ```bash
-uvicorn main:app --reload
+uvicorn main:app --reload --port 3000
 ```
 
-This will start the application, and you can access it by opening a web browser and navigating to [http://localhost:8000](http://localhost:8000).
+This will start the application, and you can access it by opening a web browser and navigating to [http://localhost:3000](http://localhost:3000).
 
 ### Using Docker 🚀
 
