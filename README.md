@@ -1,71 +1,78 @@
-Ai-Piping Installation and Usage Guide
+# Ai-Piping Installation and Usage Guide
 
-Welcome to Ai-Piping! This guide will help you install and run the Ai-Piping application using Python and Docker. Ai-Piping is a powerful tool for piping data and leveraging the capabilities of OpenAI. Follow the steps below to get started.
-Prerequisites
+**Welcome to Ai-Piping!** This guide will assist you in installing and running the Ai-Piping application using both Python and Docker. Ai-Piping is a powerful tool for data processing, utilizing the capabilities of OpenAI. Follow the steps below to get started.
 
-Before you begin, make sure you have the following prerequisites installed on your system:
+## Prerequisites
 
-    Python 3.8.10 or a newer version.
-    Docker (optional, for Docker installation).
+Before you begin, ensure that your system meets the following prerequisites:
 
-Installation
+- Python 3.8.10 or a newer version.
+- Docker (optional, for Docker installation).
 
-    Clone the Ai-Piping repository to your local machine:
+## Installation
 
-    bash or cmd
+1. Clone the Ai-Piping repository to your local machine:
 
-git clone https://github.com/Samer98/Samer-Ai-Piping.git
+   ```bash
+   git clone https://github.com/Samer98/Samer-Ai-Piping.git
+   ```
 
-Navigate to the project directory:
+2. Navigate to the project directory:
 
-bash or cmd
+   ```bash
+   cd ai-piping
+   ```
 
-cd ai-piping
+3. Install the required Python libraries listed in `requirements.txt`:
 
-Install the required Python libraries listed in requirements.txt:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-bash or cmd
+## Running the Application
 
-    pip install -r requirements.txt
-
-Running the Application
-Using Python
+### Using Python
 
 To run the Ai-Piping application using Python, execute the following command:
 
-bash or cmd
-
+```bash
 uvicorn main:app --reload
+```
 
-This will start the application, and you can access it by opening a web browser and navigating to http://localhost:8000.
-Using Docker
+This will start the application, and you can access it by opening a web browser and navigating to [http://localhost:8000](http://localhost:8000).
+
+### Using Docker
 
 If you prefer to run Ai-Piping in a Docker container, follow these steps:
 
-    Build the Docker image with the following command:
+1. Build the Docker image with the following command:
 
-    bash or cmd
+   ```bash
+   docker build -t fast-api-app .
+   ```
 
-docker build -t fast-api-app .
+2. Run the Docker container:
 
-Run the Docker container:
+   ```bash
+   docker run -d -p 8000:8000 fast-api-app
+   ```
 
-bash or cmd
+This will start the Ai-Piping application in a Docker container, and you can access it by opening a web browser and navigating to [http://localhost:8000](http://localhost:8000).
 
-    docker run -d -p 8000:8000 fast-api-app
+## Usage
 
-This will start the Ai-Piping application in a Docker container, and you can access it by opening a web browser and navigating to http://localhost:8000.
-Usage
+Once the Ai-Piping application is running, you can leverage OpenAI's capabilities for various tasks. To get recommendations based on the country you're willing to travel to and the season, you can use the following API endpoint:
 
-Once the Ai-Piping application is running, you can use it to leverage OpenAI's capabilities for various tasks. Be sure to refer to the API reference and the OpenAI Cookbook for usage examples and guidance on how to make the most of Ai-Piping's features.
+```
+http://127.0.0.1:8000/recommendations?country=$country&season=$season
+```
 
-feel free to try our api http://127.0.0.1:8000/recommendations?country=$country&season=$season
+Be sure to refer to the API reference and the OpenAI Cookbook for usage examples and guidance on how to make the most of Ai-Piping's features.
 
-You will get the best recommendations based on country you're willing to travel to with season.
+## Contributing
 
+We welcome contributions from the community. If you have ideas for improvements or would like to report issues, please create a GitHub issue or submit a pull request.
 
-We welcome contributions from the community. If you have any ideas for improvements or would like to report issues, please create a GitHub issue or submit a pull request.
-
-Thank you for using Ai-Piping! We hope this guide helps you get started quickly and effectively. If you have any questions or need further assistance, feel free to reach out to us.
+Thank you for choosing Ai-Piping! We hope this guide helps you quickly and effectively get started. If you have any questions or need further assistance, please don't hesitate to reach out to us.
 
 Happy piping! 🚀
