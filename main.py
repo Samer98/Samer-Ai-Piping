@@ -6,7 +6,7 @@ from country_cities import country_and_cities, seasons
 
 
 
-print("hello")
+
 def configure():
     load_dotenv()
 
