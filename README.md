@@ -69,10 +69,4 @@ http://127.0.0.1:8000/recommendations?country=$country&season=$season
 
 Be sure to refer to the API reference and the OpenAI Cookbook for usage examples and guidance on how to make the most of Ai-Piping's features.
 
-## Contributing
 
-We welcome contributions from the community. If you have ideas for improvements or would like to report issues, please create a GitHub issue or submit a pull request.
-
-Thank you for choosing Ai-Piping! We hope this guide helps you quickly and effectively get started. If you have any questions or need further assistance, please don't hesitate to reach out to us.
-
-Happy piping! 🚀
