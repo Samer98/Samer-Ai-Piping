@@ -28,6 +28,13 @@ Before you begin, ensure that your system meets the following prerequisites:
    ```bash
    pip install -r requirements.txt
    ```
+## Configuration 🚀
+
+1. In the project directory create new file .env
+
+2. add variable called openai_key = $openai_key
+
+3. Save the file
 
 ## Running the Application 🚀
 
