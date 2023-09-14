@@ -5,23 +5,27 @@ import os
 from country_cities import country_and_cities, seasons
 
 
+# Function used for getting environment variables
 def configure():
     load_dotenv()
 
 
 configure()
 
+# Api key for openAI
 openai.api_key = os.getenv("openai_key")
+
+
 app = FastAPI()
 
 
 @app.get("/")
-async def root():
+async def home_page():
     return {"message": "Hello to our recommendations website for traveling"}
 
 
 @app.get("/country_cities")
-async def country_cities():
+async def country_cities_list():
     return {"country_and_cities": f"Here are the country_and_cities list {country_and_cities}"}
 
 
@@ -31,7 +35,7 @@ async def season_list():
 
 
 @app.get("/recommendations")
-async def get_activity(country: str, season: str):
+async def get_recommendations(country: str, season: str):
     season = season.lower()
     country = country.lower()
 
@@ -41,7 +45,8 @@ async def get_activity(country: str, season: str):
         raise HTTPException(status_code=400, detail={"error_message": error_message})
 
     if country not in country_and_cities:
-        error_message += "Error occurred in country or city name, Please select Country or City from this link: 127.0.0.1.3000/country_cities"
+        error_message += ("Error occurred in country or city name, Please select Country or City from this link: "
+                          "127.0.0.1.3000/country_cities")
         raise HTTPException(status_code=400, detail={"error_message": error_message})
 
     if season not in seasons:
@@ -52,7 +57,8 @@ async def get_activity(country: str, season: str):
         response = openai.ChatCompletion.create(
             model='gpt-3.5-turbo',
             messages=[{"role": "user",
-                       "content": f"What the activity/recommendations in {country} when the season {season} is in it? write the recommendation without introduction and give 3 recommendation only"}]
+                       "content": f"What the activity/recommendations in {country} when the season {season} is in it? "
+                                  f"write the recommendation without introduction and give 3 recommendation only"}]
         )
         recommendations = response['choices'][0]['message']['content']
         recommendations = recommendations.splitlines()

@@ -64,7 +64,7 @@ If you prefer to run Ai-Piping in a Docker container, follow these steps:
    docker run -d -p 3000:3000 fast-api-app
    ```
 
-This will start the Ai-Piping application in a Docker container, and you can access it by opening a web browser and navigating to [http://localhost:8000](http://localhost:8000).
+This will start the Ai-Piping application in a Docker container, and you can access it by opening a web browser and navigating to [http://localhost:3000](http://localhost:8000).
 
 ## Usage 🚀
 
