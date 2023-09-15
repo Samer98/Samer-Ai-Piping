@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+<title>
+  {% block title %}
+	  Home
+  {% endblock %}
+</title>
+
+<body>
+
+  {% block content %}
+
+	<!-- banner -->
+		<h3 class="text-wh">Never let your memories be greater than your dreams.</h3>
+			<h4 class="text-wh">Be one with the Nile</h4>
+			<div class="buttons mt-4">
+				<a href="{{ url_for('get_recommendations_page') }}" class="btn mr-2">Recommendations</a>
+			</div>
+  {% endblock %}
+	<!-- //banner -->
+
+

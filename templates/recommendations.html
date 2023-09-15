@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Recommendations
+  {% endblock %}
+
+{% block content %}
+
+    <h1 class="text-white">Recommendations</h1>
+    <br>
+
+    <form action="/recommendations" method="get">
+        <div class="row">
+            <div class="col-6">
+                    <div class="mb-3">
+                        <label for="country" class="form-label text-white">Country</label>
+                        <input type="text" id="country" name="country" class="form-control text-white" placeholder="Ex: Egypt">
+                    </div>
+            </div>
+        </div>
+
+    <br>
+
+    <div class="row">
+                <div class="col-6">
+        <label class="form-label text-white" for="season">Season:</label>
+
+        <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example" id="season" name="season">
+        <option value="summer">Spring</option>
+        <option value="spring">Summer</option>
+        <option value="autumn">Autumn</option>
+        <option value="winter">Winter</option>
+        </select>
+              </div>
+    </div>
+        <br>
+        <input class="btn btn-dark rounded-pill" type="submit" value="Get Recommendations">
+    </form>
+
+
+
+    {% if error_message %}
+        <div style="color: red;">
+            <br>
+                <p>{{ error_message }}</p>
+            </div>
+        {% else %}
+           {% if result.recommendations %}
+
+            <h2 class="text-white">Recommendations: to {{result.country.title()}} when the season is {{result.season}} </h2>
+            {% for recommended in result.recommendations %}
+                <ul>
+                    <p  class="text-white">{{  recommended }}</p>
+
+                 </ul>
+            {% endfor %}
+
+            {% endif %}
+    {% endif %}
+
+
+{% endblock %}

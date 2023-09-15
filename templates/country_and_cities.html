@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Country and Cities
+  {% endblock %}
+
+{% block content %}
+
+        {% for place in country_and_cities %}
+        <ul>
+            {{ place }}
+        </ul>
+        {% endfor %}
+
+{% endblock %}

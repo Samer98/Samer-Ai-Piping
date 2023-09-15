@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Seasons
+  {% endblock %}
+
+{% block content %}
+
+        {% for season in seasons %}
+        <ul>
+            {{ season }}
+        </ul>
+        {% endfor %}
+
+
+{% endblock %}

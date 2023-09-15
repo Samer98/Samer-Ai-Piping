@@ -74,6 +74,16 @@ Once the Ai-Piping application is running, you can leverage OpenAI's capabilitie
 http://127.0.0.1:3000/recommendations?country=$country&season=$season
 ```
 
-Be sure to refer to the API reference and the OpenAI Cookbook for usage examples and guidance on how to make the most of Ai-Piping's features.
+Be sure to write valid name for country and season or you might get errors
 
+To check what is the available country/city use this API
 
+```
+http://127.0.0.1:3000/country_cities
+```
+
+To check what is the available seasons use this API
+
+```
+http://127.0.0.1:3000/seasons
+```
