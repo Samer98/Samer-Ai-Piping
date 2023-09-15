@@ -1,29 +1,26 @@
-from fastapi import FastAPI, HTTPException, Request , Response , status
+from fastapi import FastAPI, HTTPException, Request, Response, status
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 import openai
+from country_cities import country_and_cities, seasons
+from pathlib import Path
 from dotenv import load_dotenv
 import os
-from country_cities import country_and_cities, seasons
 
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from pathlib import Path
 
 # Function used for getting environment variables
 def configure():
     load_dotenv()
+
+
 configure()
-
-
-
 
 # Api key for openAI
 openai.api_key = os.getenv("openai_key")
 
-
 app = FastAPI()
 
-#For getting the static files in the project
+# For getting the static files in the project
 app.mount(
     "/static",
     StaticFiles(directory=Path(__file__).parent.absolute() / "static"),
@@ -33,15 +30,13 @@ app.mount(
 templates = Jinja2Templates(directory="templates")
 
 
-
-@app.get("/",status_code=200)
+@app.get("/", status_code=200)
 async def home_page(request: Request):
     context = {'request': request}
     return templates.TemplateResponse('home.html', context)
 
 
-
-@app.get("/recommendations_page",status_code=200)
+@app.get("/recommendations_page", status_code=200)
 async def get_recommendations_page(request: Request):
     country_and_cities.sort()
     data = {}
@@ -50,8 +45,8 @@ async def get_recommendations_page(request: Request):
     return templates.TemplateResponse("recommendations.html", context)
 
 
-@app.get("/recommendations",status_code=200)
-def get_recommendations(request: Request, country: str, season: str,response:Response):
+@app.get("/recommendations", status_code=201)
+def get_recommendations(request: Request, country: str, season: str):
     data = {}
     season = season.lower()
     country = country.lower()
@@ -67,8 +62,7 @@ def get_recommendations(request: Request, country: str, season: str,response:Res
         error_message += f"Error occurred in openai API KEY is not found \n "
 
         data['country_and_cities'] = country_and_cities
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        context = {'request': request, "error_message": error_message,"data": data}
+        context = {'request': request, "error_message": error_message, "data": data}
         return templates.TemplateResponse("recommendations.html", context)
 
     if not valid_country_and_cities:
@@ -79,8 +73,7 @@ def get_recommendations(request: Request, country: str, season: str,response:Res
     if not (valid_country_and_cities and valid_season):
         data['country_and_cities'] = country_and_cities
 
-        context = {'request': request, "error_message": error_message , "data": data}
-        response.status_code = status.HTTP_400_BAD_REQUEST
+        context = {'request': request, "error_message": error_message, "data": data}
 
         return templates.TemplateResponse("recommendations.html", context)
 
@@ -107,12 +100,10 @@ def get_recommendations(request: Request, country: str, season: str,response:Res
         data['recommendations'] = recommendations
         data['country_and_cities'] = country_and_cities
         context = {'request': request, "data": data}
-        return templates.TemplateResponse("recommendations.html",  context)
+        return templates.TemplateResponse("recommendations.html", context)
 
 
     except Exception as error_message:
         data['country_and_cities'] = country_and_cities
-        context = {'request': request,"error_message": error_message,"data": data}
-
-        # raise HTTPException(status_code=400, detail={"error_message": f"{error_message}"})
+        context = {'request': request, "error_message": error_message, "data": data}
         return templates.TemplateResponse("recommendations.html", context)
