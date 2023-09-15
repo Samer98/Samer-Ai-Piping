@@ -5,11 +5,28 @@
   {% endblock %}
 
 {% block content %}
+<div class="w3layouts-banner-info" >
+    <div class="form-group">
+    <label for="input-datalist">Country and Cities</label>
+    <input type="text" class="form-control" placeholder="Country" list="list-country" id="input-datalist">
+    <datalist id="list-country">
 
         {% for place in country_and_cities %}
-        <ul>
-            {{ place }}
-        </ul>
+
+        <option>{{ place }}</option>
+
+
         {% endfor %}
 
+    </datalist>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', e => {
+        $('#input-datalist').autocomplete()
+    }, false);
+</script>
+
+
+</div>
 {% endblock %}

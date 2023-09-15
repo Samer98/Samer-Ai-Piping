@@ -52,13 +52,15 @@ This will start the application, and you can access it by opening a web browser 
 
 If you prefer to run Ai-Piping in a Docker container, follow these steps:
 
-1. Build the Docker image with the following command:
+1. Add in the Dockerfile your ENV variables
+
+2. Build the Docker image with the following command:
 
    ```bash
    docker build -t fast-api-app .
    ```
 
-2. Run the Docker container:
+3. Run the Docker container:
 
    ```bash
    docker run -d -p 3000:3000 fast-api-app
@@ -70,6 +72,12 @@ This will start the Ai-Piping application in a Docker container, and you can acc
 
 Once the Ai-Piping application is running, you can leverage OpenAI's capabilities for various tasks. To get recommendations based on the country you're willing to travel to and the season, you can use the following API endpoint:
 
+This API for recommendations page
+```
+http://127.0.0.1:3000/recommendations_page
+```
+
+This API for query params direct
 ```
 http://127.0.0.1:3000/recommendations?country=$country&season=$season
 ```
@@ -87,3 +95,9 @@ To check what is the available seasons use this API
 ```
 http://127.0.0.1:3000/seasons
 ```
+
+## Documentation:
+
+    FastAPI documentation: https://fastapi.tiangolo.com/
+    OpenAI GPT API documentation: https://platform.openai.com/docs/api-referenc
+    Docker documentation: https://docs.docker.com/

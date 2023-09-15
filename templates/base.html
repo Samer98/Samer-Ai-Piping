@@ -55,8 +55,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<input type="checkbox" id="drop" />
 			<ul class="menu ml-auto mt-1">
 				<li class="active"><a href="{{ url_for('home_page') }}">Home</a></li>
-				<li class=""><a href="{{ url_for('season_list') }}">Seasons</a></li>
-				<li class=""><a href="{{ url_for('country_cities_list') }}">Country & Cities</a></li>
 				<li class=""><a href="{{ url_for('get_recommendations_page') }}">Recommendations</a></li>
 
 			</ul>
@@ -75,21 +73,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="banner-top">
 					<div class="overlay">
 						<div class="container">
-							<div class="w3layouts-banner-info">
                                   {% block content %}
 
 
-                                  {% endblock %}
 
-							</div>
+
+
+
+							  		{% endblock %}
+
 						</div>
 					</div>
 				</div>
 			</li>
 		</ul>
-		<div class="arrows">
-			<label for="slides_1"></label>
-		</div>
 	</div>
 </section>
 

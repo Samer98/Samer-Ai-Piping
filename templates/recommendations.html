@@ -5,16 +5,38 @@
   {% endblock %}
 
 {% block content %}
+<div class="w3layouts-banner-info" style="padding-top:9em">
 
-    <h1 class="text-white">Recommendations</h1>
-    <br>
 
     <form action="/recommendations" method="get">
         <div class="row">
             <div class="col-6">
                     <div class="mb-3">
-                        <label for="country" class="form-label text-white">Country</label>
-                        <input type="text" id="country" name="country" class="form-control text-white" placeholder="Ex: Egypt">
+<!--                        <div class="w3layouts-banner-info" >-->
+                            <h1 class="text-white">Recommendations</h1>
+                            <br>
+                            <div class="form-group">
+                            <label class="text-white" for="country">Country and Cities</label>
+                            <input type="text" class="form-control" placeholder="Country" list="list-country" name="country" id="country">
+                            <datalist id="list-country">
+
+                            {% for place in data.country_and_cities %}
+
+                            <option value= "{{ place }}">{{ place }}</option>
+
+                            {% endfor %}
+
+                            </datalist>
+<!--                            </div>-->
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', e => {
+                                    $('#country').autocomplete()
+                                }, false);
+                            </script>
+                        </div>
+
+
                     </div>
             </div>
         </div>
@@ -35,28 +57,31 @@
     </div>
         <br>
         <input class="btn btn-dark rounded-pill" type="submit" value="Get Recommendations">
+
     </form>
+<br>
 
 
 
     {% if error_message %}
         <div style="color: red;">
             <br>
-                <p>{{ error_message }}</p>
+                <p class="alert alert-danger">{{ error_message }}</p>
             </div>
         {% else %}
-           {% if result.recommendations %}
+           {% if data.recommendations %}
 
-            <h2 class="text-white">Recommendations: to {{result.country.title()}} when the season is {{result.season}} </h2>
-            {% for recommended in result.recommendations %}
+            <h2 class="text-white">Recommendations: to {{data.country.title()}} when the season is {{data.season.title()}} </h2>
+            {% for recommended in data.recommendations %}
+                <br>
                 <ul>
-                    <p  class="text-white">{{  recommended }}</p>
-
+                    <p class="alert alert-primary">{{  recommended }}</p>
+                        <br>
                  </ul>
             {% endfor %}
 
             {% endif %}
     {% endif %}
 
-
+</div>
 {% endblock %}

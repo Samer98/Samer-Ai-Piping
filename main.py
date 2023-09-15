@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request , Response , status
 import openai
 from dotenv import load_dotenv
 import os
@@ -9,16 +9,17 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-
-
-
 # Function used for getting environment variables
 def configure():
     load_dotenv()
+configure()
+
+
 
 
 # Api key for openAI
 openai.api_key = os.getenv("openai_key")
+
 
 app = FastAPI()
 
@@ -28,42 +29,34 @@ app.mount(
     StaticFiles(directory=Path(__file__).parent.absolute() / "static"),
     name="static",
 )
+
 templates = Jinja2Templates(directory="templates")
 
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/",status_code=200)
 async def home_page(request: Request):
     context = {'request': request}
     return templates.TemplateResponse('home.html', context)
 
 
 
-@app.get("/country_cities")
-async def country_cities_list(request: Request):
-    country_and_cities.sort()
-    context = {'request': request, "country_and_cities": country_and_cities}
-    # return {"country_and_cities": f"Here are the country_and_cities list {country_and_cities}"}
-    return templates.TemplateResponse('country_and_cities.html', context)
-
-
-@app.get("/seasons")
-async def season_list(request: Request):
-    context = {'request': request, "seasons": seasons}
-
-    return templates.TemplateResponse('season.html', context)
-
-
-@app.get("/recommendations_page")
+@app.get("/recommendations_page",status_code=200)
 async def get_recommendations_page(request: Request):
-    context = {'request': request, "result": ""}
+    country_and_cities.sort()
+    data = {}
+    data['country_and_cities'] = country_and_cities
+    context = {'request': request, "data": data}
     return templates.TemplateResponse("recommendations.html", context)
 
 
-@app.get("/recommendations")
-async def get_recommendations(request: Request, country: str, season: str):
+@app.get("/recommendations",status_code=200)
+def get_recommendations(request: Request, country: str, season: str,response:Response):
+    data = {}
     season = season.lower()
     country = country.lower()
+
+    country_and_cities.sort()
 
     valid_country_and_cities = country in country_and_cities
     valid_season = season in seasons
@@ -72,15 +65,22 @@ async def get_recommendations(request: Request, country: str, season: str):
 
     if openai.api_key is None:
         error_message += f"Error occurred in openai API KEY is not found \n "
-        raise HTTPException(status_code=400, detail={"error_message": error_message})
+
+        data['country_and_cities'] = country_and_cities
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        context = {'request': request, "error_message": error_message,"data": data}
+        return templates.TemplateResponse("recommendations.html", context)
 
     if not valid_country_and_cities:
-        error_message += "Error occurred in country or city name, Please select Country or City from this link: 127.0.0.1.3000/country_cities\n"
+        error_message += "Error occurred in country or city name, Please select valid Country or City \n"
     if not valid_season:
         error_message += f"Error occurred in season name, Please select season from {seasons}\n "
 
     if not (valid_country_and_cities and valid_season):
-        context = {'request': request, "error_message": error_message}
+        data['country_and_cities'] = country_and_cities
+
+        context = {'request': request, "error_message": error_message , "data": data}
+        response.status_code = status.HTTP_400_BAD_REQUEST
 
         return templates.TemplateResponse("recommendations.html", context)
 
@@ -101,12 +101,18 @@ async def get_recommendations(request: Request, country: str, season: str):
         for space in recommendations:
             if space == "":
                 recommendations.remove("")
-        result = {"country": country, "season": season,"recommendations":recommendations}
-        context = {'request': request, "result": result}
 
+        data['country'] = country
+        data['season'] = season
+        data['recommendations'] = recommendations
+        data['country_and_cities'] = country_and_cities
+        context = {'request': request, "data": data}
         return templates.TemplateResponse("recommendations.html",  context)
 
-        # return result
 
     except Exception as error_message:
-        raise HTTPException(status_code=400, detail={"error_message": f"{error_message}"})
+        data['country_and_cities'] = country_and_cities
+        context = {'request': request,"error_message": error_message,"data": data}
+
+        # raise HTTPException(status_code=400, detail={"error_message": f"{error_message}"})
+        return templates.TemplateResponse("recommendations.html", context)
