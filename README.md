@@ -77,9 +77,22 @@ This API for recommendations page
 http://127.0.0.1:3000/recommendations_page
 ```
 
-This API for query params direct
+This API for query params
 ```
-http://127.0.0.1:3000/recommendations?country=$country&season=$season
+http://127.0.0.1:3000//api/recommendations
+```
+send in query params $country ,  $season
+the result will be similar to this
+```
+{
+    "country": "egypt",
+    "season": "winter",
+    "recommendations": [
+        "1. Visit the Pyramids of Giza: Explore one of the Seven Wonders of the Ancient World in a less crowded season. Enjoy the stunning views of the pyramids covered in a picturesque snowfall, and take advantage of the cooler temperatures for a more comfortable visit.",
+        "2. Experience a Nile River Cruise: Hop aboard a luxury cruise and meander along the Nile River, taking in the breathtaking landscapes of ancient temples, deserted ruins, and picturesque villages. The cool winter weather provides a pleasant atmosphere to enjoy the scenic beauty of Egypt's iconic waterway.",
+        "3. Explore Luxor and Karnak Temples: Discover the fascinating treasures of ancient Egyptian history by visiting the Luxor and Karnak Temples. With mild winter temperatures, you can comfortably explore these vast temple complexes and marvel at their stunning architecture and intricate carvings without battling the intense summer heat."
+    ]
+}
 ```
 
 Be sure to write valid name for country and season or you might get errors
