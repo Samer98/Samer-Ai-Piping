@@ -104,7 +104,6 @@ def get_recommendations(country: str, season: str,response: Response):
     try:
         context = chatGPT_response(country, season)
     except Exception as error_message:
-        data['country_and_cities'] = country_and_cities
-        context = {"error_message": error_message, "data": data}
+        context = {"error_message": error_message}
 
     return context
