@@ -48,8 +48,8 @@
         <label class="form-label text-white" for="season">Season:</label>
 
         <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example" id="season" name="season">
-        <option value="summer">Spring</option>
-        <option value="spring">Summer</option>
+        <option value="summer">Summer</option>
+        <option value="spring">spring</option>
         <option value="autumn">Autumn</option>
         <option value="winter">Winter</option>
         </select>
@@ -66,7 +66,9 @@
     {% if error_message %}
         <div style="color: red;">
             <br>
-                <p class="alert alert-danger">{{ error_message }}</p>
+                {% for error in error_message %}
+                    <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
             </div>
         {% else %}
            {% if data.recommendations %}
