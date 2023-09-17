@@ -6,7 +6,6 @@ from abc import ABC
 def configure():
     load_dotenv()
 
-
 configure()
 
 class ChatGPT():
@@ -36,11 +35,10 @@ class ChatGPT():
             if space == "":
                 recommendations.remove("")
 
-        # context = {"country": country, 'season': season, "recommendations": recommendations}
         return recommendations
 
     @staticmethod
-    def is_key_present(self):
-        return self.openai.api_key is not None
+    def is_key_present():
+        return openai.api_key is not None
 
 

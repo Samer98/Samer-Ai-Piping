@@ -18,7 +18,7 @@
 
                             {% for place in data.country_and_cities %}
 
-                            <option value= "{{ place }}">{{ place }}</option>
+                            <option value= "{{ place.title() }}">{{ place.title() }}</option>
 
                             {% endfor %}
 
