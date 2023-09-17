@@ -1,15 +1,14 @@
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pathlib import Path
-from helper_functions import chatGPT_response, country_and_season_validation , openAi_key_validation
+from helper_functions import chatGPT_response, country_and_season_validation , is_openAi_key_present
 from country_cities import country_and_cities, seasons
-import os
-import openai
-
-
+from pathlib import Path
+from chatGPT import ChatGPT
 # Api key for openAI
-openai.api_key = os.getenv("openai_key")
+# openai.api_key = os.getenv("openai_key")
+
+
 
 app = FastAPI()
 
@@ -46,7 +45,7 @@ def get_recommendations(request: Request, country: str, season: str,response: Re
     country_and_cities.sort()
 
 
-    openAi_key = openAi_key_validation(openai)
+    openAi_key = is_openAi_key_present()
     if openAi_key:
         context = {'request': request, "error_message": openAi_key, "data": data}
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -56,7 +55,7 @@ def get_recommendations(request: Request, country: str, season: str,response: Re
     if country_and_season_valid:
         response.status_code = status.HTTP_400_BAD_REQUEST
         data['country_and_cities'] = country_and_cities
-        context = {'request': request, "error_message": country_and_season_valid, "data": data , "loader":False}
+        context = {'request': request, "error_message": country_and_season_valid, "data": data}
         return templates.TemplateResponse("recommendations.html", context)
 
     try:
@@ -83,9 +82,9 @@ def get_recommendations(country: str, season: str,response: Response):
     country = country.lower()
     country_and_cities.sort()
 
-    openAi_key = openAi_key_validation(openai)
-    if openAi_key:
-        context = {"error_message": openAi_key}
+    # is_key_present = is_openAi_key_present(openai)
+    if not ChatGPT.is_key_present():
+        context = {"error_message": "Error occurred in openai API key is not found"}
         response.status_code = status.HTTP_400_BAD_REQUEST
         return context
 
@@ -96,7 +95,11 @@ def get_recommendations(country: str, season: str,response: Response):
         return context
 
     try:
-        context = chatGPT_response(country, season)
+        recommendations = ChatGPT.get_travel_recommendations(country, season)
+        # print(recommendations)
+        context = {"country": country, 'season': season, "recommendations": recommendations}
+
+        # context = chatGPT_response(country, season)
     except Exception as error_message:
         context = {"error_message": error_message}
 
