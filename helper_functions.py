@@ -1,22 +1,17 @@
 import openai
-import os
 from country_cities import country_and_cities, seasons
-
-
 from dotenv import load_dotenv
+
+
+# Function used for getting environment variables
 
 def configure():
     load_dotenv()
 
+
 configure()
 
 
-def  openAi_key_validation(openai):
-    error_message = []
-    if openai.api_key is None:
-        error_message.append(f"Error occurred in openai API KEY is not found ")
-
-    return error_message
 def chatGPT_response(country, season):
     response = openai.ChatCompletion.create(
         model='gpt-3.5-turbo',
@@ -39,9 +34,16 @@ def chatGPT_response(country, season):
     return context
 
 
+def openAi_key_validation(openai):
+    error_message = []
+    if openai.api_key is None:
+        error_message.append(f"Error occurred in openai API KEY is not found ")
+
+    return error_message
+
+
 def country_and_season_validation(country, season):
     error_message = []
-
 
     if country not in country_and_cities:
         error_message.append(

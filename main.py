@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-# import openai
 from pathlib import Path
 from helper_functions import chatGPT_response, country_and_season_validation , openAi_key_validation
 from country_cities import country_and_cities, seasons
@@ -9,13 +8,8 @@ import os
 import openai
 
 
-# Function used for getting environment variables
-openai.api_key = os.getenv("openai_key")
-
-
-
 # Api key for openAI
-# openai.api_key = os.getenv("openai_key")
+openai.api_key = os.getenv("openai_key")
 
 app = FastAPI()
 
@@ -51,6 +45,7 @@ def get_recommendations(request: Request, country: str, season: str,response: Re
     country = country.lower()
     country_and_cities.sort()
 
+
     openAi_key = openAi_key_validation(openai)
     if openAi_key:
         context = {'request': request, "error_message": openAi_key, "data": data}
@@ -61,7 +56,7 @@ def get_recommendations(request: Request, country: str, season: str,response: Re
     if country_and_season_valid:
         response.status_code = status.HTTP_400_BAD_REQUEST
         data['country_and_cities'] = country_and_cities
-        context = {'request': request, "error_message": country_and_season_valid, "data": data}
+        context = {'request': request, "error_message": country_and_season_valid, "data": data , "loader":False}
         return templates.TemplateResponse("recommendations.html", context)
 
     try:
@@ -84,7 +79,6 @@ def get_recommendations(request: Request, country: str, season: str,response: Re
 
 @app.get("/api/recommendations", status_code=200)
 def get_recommendations(country: str, season: str,response: Response):
-    data = {}
     season = season.lower()
     country = country.lower()
     country_and_cities.sort()
