@@ -95,7 +95,7 @@ the result will be similar to this
 }
 ```
 
-## Documentation:
+## Documentation 🚀
 
     FastAPI documentation: https://fastapi.tiangolo.com/
     OpenAI GPT API documentation: https://platform.openai.com/docs/api-referenc

@@ -70,7 +70,7 @@ def get_recommendations(request: Request, country: str, season: str):
     country_and_cities.sort()
 
     if not ChatGPT.is_key_present():
-        error_message = "Error occurred in openai API key is not found"
+        error_message = ["Error occurred in openai API key is not found"]
         context = {'request': request, "error_message": error_message, "data": data}
         return templates.TemplateResponse("recommendations.html", context)
 

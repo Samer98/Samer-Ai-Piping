@@ -15,15 +15,17 @@ def test_correct_country_wrong_season():
     response = client.get('/api/recommendations?country=canada&season=springs')
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.json() == {"error_message": ["Error occurred in season name, Please select season from ['summer', 'winter', 'spring', 'autumn']"]}
+    assert response.json() == {"error_message": ['Wrong Season selected, Please select season from Summer, Winter, Spring, Autumn']}
 def test_wrong_country_correct_season():
     response = client.get('/api/recommendations?country=canadaa&season=spring')
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.json() == {"error_message": ["Error occurred in country or city name, Please select valid Country or City"]}
+    assert response.json() == {"error_message": ["Wrong Country or City name selected, Please select Valid Country or City"]}
 
 def test_wrong_country_wrong_season():
     response = client.get('/api/recommendations?country=canadaa&season=springs')
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert response.json() == {"error_message": ["Wrong Country or City name selected, Please select Valid Country or City",
+                                                 'Wrong Season selected, Please select season from Summer, Winter, Spring, Autumn']}
 
