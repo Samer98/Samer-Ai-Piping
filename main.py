@@ -63,25 +63,21 @@ def get_recommendations(country: str, season: str, response: Response):
 
 
 @app.get("/recommendations", status_code=200)
-def get_recommendations(request: Request, country: str, season: str, response: Response):
+def get_recommendations(request: Request, country: str, season: str):
     data = {}
     season = season.lower()
     country = country.lower()
     country_and_cities.sort()
-    error_message = []
 
     if not ChatGPT.is_key_present():
         error_message = "Error occurred in openai API key is not found"
         context = {'request': request, "error_message": error_message, "data": data}
-        response.status_code = status.HTTP_400_BAD_REQUEST
         return templates.TemplateResponse("recommendations.html", context)
 
     error_message = []
     if not is_country_present(country):
-        response.status_code = status.HTTP_400_BAD_REQUEST
         error_message.append("Wrong Country or City name selected, Please select Valid Country or City")
     if not is_season_present(season):
-        response.status_code = status.HTTP_400_BAD_REQUEST
         error_message.append("Wrong Season selected, Please select season from Summer, Winter, Spring, Autumn")
 
     if len(error_message) > 0:
