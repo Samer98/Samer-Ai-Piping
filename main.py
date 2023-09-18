@@ -1,7 +1,7 @@
-from fastapi import FastAPI, Request, Response, status
+from fastapi import FastAPI, Request, Response, status, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from helper_functions import country_and_season_validation
+from helper_functions import is_season_present, is_country_present
 from country_cities import country_and_cities
 from pathlib import Path
 from chatGPT import ChatGPT
@@ -33,12 +33,42 @@ async def get_recommendations_page(request: Request):
     return templates.TemplateResponse("recommendations.html", context)
 
 
+@app.get("/api/recommendations", status_code=200)
+def get_recommendations(country: str, season: str, response: Response):
+    season = season.lower()
+    country = country.lower()
+    country_and_cities.sort()
+
+    if not ChatGPT.is_key_present():
+        raise HTTPException (status_code=404, detail="openai API key is not found")
+
+    error_message = []
+    if not is_country_present(country):
+        error_message.append("Wrong Country or City name selected, Please select Valid Country or City")
+
+    if not is_season_present(season):
+        error_message.append( "Wrong Season selected, Please select season from Summer, Winter, Spring, Autumn")
+
+    if len(error_message) > 0:
+        raise HTTPException(status_code=400, detail=error_message)
+
+    try:
+        recommendations = ChatGPT.get_travel_recommendations(country, season)
+        context = {"country": country, 'season': season, "recommendations": recommendations}
+        return context
+
+    except Exception as error_message:
+
+        raise HTTPException(status_code=400,detail=error_message)
+
+
 @app.get("/recommendations", status_code=200)
 def get_recommendations(request: Request, country: str, season: str, response: Response):
     data = {}
     season = season.lower()
     country = country.lower()
     country_and_cities.sort()
+    error_message = []
 
     if not ChatGPT.is_key_present():
         error_message = "Error occurred in openai API key is not found"
@@ -46,11 +76,17 @@ def get_recommendations(request: Request, country: str, season: str, response: R
         response.status_code = status.HTTP_400_BAD_REQUEST
         return templates.TemplateResponse("recommendations.html", context)
 
-    country_and_season_valid = country_and_season_validation(country, season)
-    if country_and_season_valid:
+    error_message = []
+    if not is_country_present(country):
         response.status_code = status.HTTP_400_BAD_REQUEST
+        error_message.append("Wrong Country or City name selected, Please select Valid Country or City")
+    if not is_season_present(season):
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        error_message.append("Wrong Season selected, Please select season from Summer, Winter, Spring, Autumn")
+
+    if len(error_message) > 0:
         data['country_and_cities'] = country_and_cities
-        context = {'request': request, "error_message": country_and_season_valid, "data": data}
+        context = {'request': request, "error_message":error_message, "data": data}
         return templates.TemplateResponse("recommendations.html", context)
 
     try:
@@ -68,27 +104,5 @@ def get_recommendations(request: Request, country: str, season: str, response: R
     return templates.TemplateResponse("recommendations.html", context)
 
 
-@app.get("/api/recommendations", status_code=200)
-def get_recommendations(country: str, season: str, response: Response):
-    season = season.lower()
-    country = country.lower()
-    country_and_cities.sort()
 
-    if not ChatGPT.is_key_present():
-        context = {"error_message": "Error occurred in openai API key is not found"}
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return context
 
-    country_and_season_valid = country_and_season_validation(country, season)
-    if country_and_season_valid:
-        context = {"error_message": country_and_season_valid}
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return context
-
-    try:
-        recommendations = ChatGPT.get_travel_recommendations(country, season)
-        context = {"country": country, 'season': season, "recommendations": recommendations}
-
-    except Exception as error_message:
-        context = {"error_message": error_message}
-    return context
