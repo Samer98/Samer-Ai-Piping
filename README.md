@@ -79,7 +79,7 @@ http://127.0.0.1:3000/recommendations_page
 
 This API for query params
 ```
-http://127.0.0.1:3000//api/recommendations
+http://127.0.0.1:3000/api/recommendations
 ```
 send in query params $country ,  $season
 the result will be similar to this
